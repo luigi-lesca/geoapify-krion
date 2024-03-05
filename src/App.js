@@ -254,7 +254,7 @@ function App() {
       }
     },
     {
-      position: [45.4766974, 9.1205017], // San Siro (inserito indirizzo del piazzale)
+      position: [45.4781252, 9.1238556], // San Siro (inserito indirizzo del piazzale)
       info: {
         title: "Attacco a San Siro",
         category: "Security Alert",
@@ -284,9 +284,9 @@ function App() {
       }
     },
     {
-      position: [45.6105158, 9.2333152], // Beije (inserito indirizzo)
+      position: [45.6102, 9.2337357], // Beije (inserito indirizzo)
       info: {
-        title: "Attacco in corso...",
+        title: "Sede Beije",
         category: "Security Alert",
         subCategory: "Terrorism",
         typology: "Warning",
@@ -294,6 +294,51 @@ function App() {
         RiskLevel: "High",
         eventData: "05-08-2024",
         description: "Possibile attacco terroristico in prossimità della zona della sede di Beije.",
+        iconUrl: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/information/typologyicon-65df67ffd83e27019fa12734.png",
+        file: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/alert-map/alertmapfile-65e049bdd83e27019fa12796.pdf"
+      }
+    },
+    {
+      position: [45.4985004, 9.1864475], // piazzale Carlo Maciachini, 2 (inserito indirizzo)
+      info: {
+        title: "Incidente Piazzale Carlo Maciachini, 2",
+        category: "Security Alert",
+        subCategory: "Terrorism",
+        typology: "Warning",
+        sector: "Security",
+        RiskLevel: "High",
+        eventData: "05-08-2024",
+        description: "Incidente in zona del Piazzale arlo Maciachini 2.",
+        iconUrl: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/information/typologyicon-65df67ffd83e27019fa12734.png",
+        file: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/alert-map/alertmapfile-65e049bdd83e27019fa12796.pdf"
+      }
+    },
+    {
+      position: [45.0686211, 7.6837866], // Museo egizio Torino (Via Accademia delle Scienze, 6, 10123 Torino TO)
+      info: {
+        title: "Museo egizio Torino",
+        category: "Security Alert",
+        subCategory: "Terrorism",
+        typology: "Warning",
+        sector: "Security",
+        RiskLevel: "High",
+        eventData: "05-08-2024",
+        description: "Allarme Museo egizio Torino.",
+        iconUrl: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/information/typologyicon-65df67ffd83e27019fa12734.png",
+        file: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/alert-map/alertmapfile-65e049bdd83e27019fa12796.pdf"
+      }
+    },
+    {
+      position: [45.609449, 9.2359528], //Trebisonda (Via Loreto, 57, 20851 Lissone MB)
+      info: {
+        title: "Trebisonda",
+        category: "Security Alert",
+        subCategory: "Terrorism",
+        typology: "Warning",
+        sector: "Security",
+        RiskLevel: "High",
+        eventData: "05-08-2024",
+        description: "Allarme Trebisonda.",
         iconUrl: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/information/typologyicon-65df67ffd83e27019fa12734.png",
         file: "https://kriptia-dev.s3.eu-south-1.amazonaws.com/alert-map/alertmapfile-65e049bdd83e27019fa12796.pdf"
       }
