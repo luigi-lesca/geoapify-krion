@@ -345,39 +345,39 @@ function App() {
     }
   ];
 
-  const handleSearch = async () => {
-    try {
-      let searchText = '';
+  // const handleSearch = async () => {
+  //   try {
+  //     let searchText = '';
 
-      if (dataCity.type === 'city') {
-        searchText = dataCity.city;
-      } else if (dataCity.type === 'street') {
-        searchText = `${dataCity.street} ${dataCity.city}`; // Invertiamo l'ordine per inserire il nome della città dopo il nome della strada
-      }
+  //     if (dataCity.type === 'city') {
+  //       searchText = dataCity.city;
+  //     } else if (dataCity.type === 'street') {
+  //       searchText = `${dataCity.street} ${dataCity.city}`; // Invertiamo l'ordine per inserire il nome della città dopo il nome della strada
+  //     }
 
-      const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${searchText}&type=${dataCity.type}&limit=1&lang=it&apiKey=${API_KEY}`);
-      const data = await response.json();
-      console.log("data", data.features[0].properties)
-      if (data.features.length > 0) {
-        const { lat, lon, country, street, state, address_line2, city } = data.features[0].properties;
-        if (dataCity.type === 'street') {
-          // Se la ricerca è per strada, includi anche il nome della città nei dati
-          setDataCity({ ...dataCity, country, state, street: `${city} ${street}`, address_line2, cityName: city });
-        } else {
-          // Altrimenti, aggiorna solo i dati della città
-          setDataCity({ ...dataCity, country, state, cityName: city, address_line2 });
-        }
+  //     const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${searchText}&type=${dataCity.type}&limit=1&lang=it&apiKey=${API_KEY}`);
+  //     const data = await response.json();
+  //     console.log("data", data.features[0].properties)
+  //     if (data.features.length > 0) {
+  //       const { lat, lon, country, street, state, address_line2, city } = data.features[0].properties;
+  //       if (dataCity.type === 'street') {
+  //         // Se la ricerca è per strada, includi anche il nome della città nei dati
+  //         setDataCity({ ...dataCity, country, state, street: `${city} ${street}`, address_line2, cityName: city });
+  //       } else {
+  //         // Altrimenti, aggiorna solo i dati della città
+  //         setDataCity({ ...dataCity, country, state, cityName: city, address_line2 });
+  //       }
 
-        setCoordinates({ lat: parseFloat(lat), lon: parseFloat(lon) });
-        setZoom(12);
-      } else {
-        console.log('Location not found');
-        setCoordinates(null); // Resetta le coordinate se la città non è stata trovata
-      }
-    } catch (error) {
-      console.error('Error searching location:', error);
-    }
-  };
+  //       setCoordinates({ lat: parseFloat(lat), lon: parseFloat(lon) });
+  //       setZoom(12);
+  //     } else {
+  //       console.log('Location not found');
+  //       setCoordinates(null); // Resetta le coordinate se la città non è stata trovata
+  //     }
+  //   } catch (error) {
+  //     console.error('Error searching location:', error);
+  //   }
+  // };
 
   // Dopo aver definito le coordinate del marker
   // Chiamata all'API Reverse Geocoding
@@ -397,7 +397,7 @@ function App() {
 
   // Funzione per gestire la selezione di una città dall'autocompletamento
   const handleSelect = (city) => {
-    console.log(city)
+    console.log("city", city)
     setDataCity({ ...dataCity, cityName: city.name, country: city.country, address_line2: city.location, state: city.region });
     setCoordinates({ lat: city.position[0], lon: city.position[1] });
     setZoom(12);
@@ -411,7 +411,6 @@ function App() {
       </>
     )
   }
-
 
   return (
     <div className="map">
@@ -449,63 +448,79 @@ function App() {
         />
       </div>
 
-      <MapContainer center={[51.505, -0.09]} zoom={zoom} style={{ height: '700px', width: '100%' }}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {coordinates && (
-          <>
-            <LocationMarker coordinates={coordinates} />
+      <div style={{ display: "flex" }}>
+        <div>
+          {/* Sidebar */}
+          <h2>Alert Maps</h2>
+          <ul>
             {markers.map((marker, index) => (
-              <Marker
-                key={index}
-                position={marker.position}
-                icon={marker.info.iconUrl ? new L.Icon({ iconUrl: marker.info.iconUrl, iconSize: [32, 32] }) : defaultIcon}
-                eventHandlers={{
-                  click: () => {
-                    // Quando il marker viene cliccato, chiama la funzione per trovare la città corrispondente
-                    fetchCityFromCoordinates(marker.position[0], marker.position[1]);
-                  },
-                }}
-              >
-                <Popup>
-                  <h3>{marker.info.title}</h3>
-                  <p>City: {dataCity.pin}</p>
-                  <p>Type: {marker.info.typology}</p>
-                  <p>Sector: {marker.info.sector}</p>
-                  <p>Category: {marker.info.category}</p>
-                  <p>Subcategory: {marker.info.subCategory}</p>
-                  <p>Risk Level: {marker.info.RiskLevel}</p>
-                  <p>Description: {marker.info.description}</p>
-                  <p>Date: {marker.info.eventData}</p>
-                  {marker.info.file && (
-                    <a href={marker.info.file} download>
-                      <button>Download file or image</button>
-                    </a>
-                  )}
-                </Popup>
-              </Marker>
+              // console.log("marker", marker)
+              <li key={index}>{marker.info.title}</li>
             ))}
-            {(coordinates.lat !== 0 && coordinates.lon !== 0) && <Marker position={[coordinates.lat, coordinates.lon]}>
-              <Popup>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {/* <h3>Rivolta causa tasse estreme</h3> */}
-                  <p> City: {dataCity.cityName}</p>
-                  <p> Country: {dataCity.country}</p>
-                  <p> Region: {dataCity.state}</p>
-                  {dataCity.type === "street" && <p> Adress: {dataCity.street}</p>}
-                  <p> Location: {dataCity.address_line2}</p>
-                  {/* <p> Categories: Cybercecurity, Natural Disater</p>
+          </ul>
+        </div>
+
+        <MapContainer
+          center={[51.505, -0.09]}
+          zoom={zoom}
+          style={{ height: '700px', width: '100%' }}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {coordinates && (
+            <>
+              <LocationMarker coordinates={coordinates} />
+              {markers.map((marker, index) => (
+                <Marker
+                  key={index}
+                  position={marker.position}
+                  icon={marker.info.iconUrl ? new L.Icon({ iconUrl: marker.info.iconUrl, iconSize: [32, 32] }) : defaultIcon}
+                  eventHandlers={{
+                    click: () => {
+                      // Quando il marker viene cliccato, chiama la funzione per trovare la città corrispondente
+                      fetchCityFromCoordinates(marker.position[0], marker.position[1]);
+                    },
+                  }}
+                >
+                  <Popup>
+                    <h3>{marker.info.title}</h3>
+                    <p>City: {dataCity.pin}</p>
+                    <p>Type: {marker.info.typology}</p>
+                    <p>Sector: {marker.info.sector}</p>
+                    <p>Category: {marker.info.category}</p>
+                    <p>Subcategory: {marker.info.subCategory}</p>
+                    <p>Risk Level: {marker.info.RiskLevel}</p>
+                    <p>Description: {marker.info.description}</p>
+                    <p>Date: {marker.info.eventData}</p>
+                    {marker.info.file && (
+                      <a href={marker.info.file} download>
+                        <button>Download file or image</button>
+                      </a>
+                    )}
+                  </Popup>
+                </Marker>
+              ))}
+              {(coordinates.lat !== 0 && coordinates.lon !== 0) && <Marker position={[coordinates.lat, coordinates.lon]}>
+                <Popup>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    {/* <h3>Rivolta causa tasse estreme</h3> */}
+                    <p> City: {dataCity.cityName}</p>
+                    <p> Country: {dataCity.country}</p>
+                    <p> Region: {dataCity.state}</p>
+                    {dataCity.type === "street" && <p> Adress: {dataCity.street}</p>}
+                    <p> Location: {dataCity.address_line2}</p>
+                    {/* <p> Categories: Cybercecurity, Natural Disater</p>
                   <p> Report Type: iformation</p>
                   <p> Risk Level: High</p> */}
-                </div>
-              </Popup>
-            </Marker>}
-          </>
-        )}
-      </MapContainer>
-    </div >
+                  </div>
+                </Popup>
+              </Marker>}
+            </>
+          )}
+        </MapContainer>
+      </div >
+    </div>
   );
 }
 
